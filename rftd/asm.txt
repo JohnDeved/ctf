@@ -1,0 +1,324 @@
+                             **************************************************************
+                             *                          FUNCTION                          *
+                             **************************************************************
+                             undefined append_list()
+             undefined         AL:1           <RETURN>
+                             append_list                                     XREF[4]:     Entry Point(*), 
+                                                                                          init_shuffle_list:001012b6(c), 
+                                                                                          0010207c, 00102154(*)  
+        001011da 41 54           PUSH       R12
+        001011dc 55              PUSH       RBP
+        001011dd 53              PUSH       RBX
+        001011de 41 89 f4        MOV        R12D,ESI
+        001011e1 89 d5           MOV        EBP,EDX
+        001011e3 48 8b 07        MOV        RAX,qword ptr [RDI]
+        001011e6 48 85 c0        TEST       RAX,RAX
+        001011e9 74 32           JZ         LAB_0010121d
+                             LAB_001011eb                                    XREF[1]:     001011f4(j)  
+        001011eb 48 89 c3        MOV        RBX,RAX
+        001011ee 48 8b 00        MOV        RAX,qword ptr [RAX]
+        001011f1 48 85 c0        TEST       RAX,RAX
+        001011f4 75 f5           JNZ        LAB_001011eb
+        001011f6 bf 10 00        MOV        EDI,0x10
+                 00 00
+        001011fb e8 90 fe        CALL       <EXTERNAL>::malloc                               void * malloc(size_t __size)
+                 ff ff
+
+                 // This instruction moves the address of the allocated memory (stored in RAX) 
+                 // into the memosecrery location pointed to by RBX. This is storing the address of 
+                 // the new node in the next field of the previous node.
+        00101200 48 89 03        MOV        qword ptr [RBX],RAX // 0x0 is the value of the next field
+        00101203 48 c7 00        MOV        qword ptr [RAX],0x0 
+                 00 00 00 00
+        0010120a 48 8b 03        MOV        RAX,qword ptr [RBX]
+        0010120d 44 88 60 08     MOV        byte ptr [RAX + 0x8],R12B // 0x8 is the offset of the value field
+        00101211 48 8b 03        MOV        RAX,qword ptr [RBX]
+        00101214 40 88 68 09     MOV        byte ptr [RAX + 0x9],BPL // 0x9 is the offset of the secret field
+                             LAB_00101218                                    XREF[1]:     0010123c(j)  
+        00101218 5b              POP        RBX
+        00101219 5d              POP        RBP
+        0010121a 41 5c           POP        R12
+        0010121c c3              RET
+                             LAB_0010121d                                    XREF[1]:     001011e9(j)  
+        0010121d 48 89 fb        MOV        RBX,RDI
+        00101220 bf 10 00        MOV        EDI,0x10
+                 00 00
+        00101225 e8 66 fe        CALL       <EXTERNAL>::malloc                               void * malloc(size_t __size)
+                 ff ff
+        0010122a 48 c7 00        MOV        qword ptr [RAX],0x0
+                 00 00 00 00
+        00101231 44 88 60 08     MOV        byte ptr [RAX + 0x8],R12B
+        00101235 40 88 68 09     MOV        byte ptr [RAX + 0x9],BPL
+        00101239 48 89 03        MOV        qword ptr [RBX],RAX
+        0010123c eb da           JMP        LAB_00101218
+
+                             **************************************************************
+                             *                          FUNCTION                          *
+                             **************************************************************
+                             undefined init_shuffle_list()
+             undefined         AL:1           <RETURN>
+             undefined8        Stack[-0x30]:8 local_30                                XREF[4]:     00101265(W), 
+                                                                                                   0010129c(R), 
+                                                                                                   001012af(*), 
+                                                                                                   001012dc(R)  
+             undefined1        Stack[-0x31]:1 local_31                                XREF[2]:     00101278(*), 
+                                                                                                   0010128e(R)  
+                             init_shuffle_list                               XREF[4]:     Entry Point(*), main:001013a2(c), 
+                                                                                          00102084, 00102180(*)  
+        0010123e 41 56           PUSH       R14
+        00101240 41 55           PUSH       R13
+        00101242 41 54           PUSH       R12
+        00101244 55              PUSH       RBP
+        00101245 53              PUSH       RBX
+        00101246 48 83 ec 10     SUB        RSP,0x10
+        0010124a 49 89 fe        MOV        R14,RDI
+        0010124d be 00 00        MOV        ESI,0x0
+                 00 00
+        00101252 48 8d 3d        LEA        RDI,[s_/dev/urandom_00102004]                    = "/dev/urandom"
+                 ab 0d 00 00
+        00101259 b8 00 00        MOV        EAX,0x0
+                 00 00
+        0010125e e8 3d fe        CALL       <EXTERNAL>::open                                 int open(char * __file, int __of
+                 ff ff
+        00101263 89 c5           MOV        EBP,EAX
+        00101265 48 c7 44        MOV        qword ptr [RSP + local_30],0x0
+                 24 08 00 
+                 00 00 00
+        0010126e 4d 89 f5        MOV        R13,R14
+        00101271 49 81 c6        ADD        R14,0xaf
+                 af 00 00 00
+        00101278 4c 8d 64        LEA        R12=>local_31,[RSP + 0x7]
+                 24 07
+        0010127d eb 45           JMP        LAB_001012c4
+                             LAB_0010127f                                    XREF[2]:     00101295(j), 001012a8(j)  
+        0010127f ba 01 00        MOV        EDX,0x1
+                 00 00
+        00101284 4c 89 e6        MOV        RSI,R12
+        00101287 89 ef           MOV        EDI,EBP
+        00101289 e8 d2 fd        CALL       <EXTERNAL>::read                                 ssize_t read(int __fd, void * __
+                 ff ff
+                             LAB_0010128e                                    XREF[1]:     001012d3(j)  
+        0010128e 0f b6 44        MOVZX      EAX,byte ptr [RSP + local_31]
+                 24 07
+        00101293 3c ae           CMP        AL,0xae
+        00101295 77 e8           JA         LAB_0010127f
+        00101297 0f b6 d8        MOVZX      EBX,AL
+        0010129a 89 de           MOV        ESI,EBX
+        0010129c 48 8b 7c        MOV        RDI,qword ptr [RSP + local_30]
+                 24 08
+        001012a1 e8 0f ff        CALL       pos_in_list                                      undefined pos_in_list()
+                 ff ff
+        001012a6 84 c0           TEST       AL,AL
+        001012a8 75 d5           JNZ        LAB_0010127f
+        001012aa 41 0f be        MOVSX      EDX,byte ptr [R13]
+                 55 00
+        001012af 48 8d 7c        LEA        RDI=>local_30,[RSP + 0x8]
+                 24 08
+        001012b4 89 de           MOV        ESI,EBX
+        001012b6 e8 1f ff        CALL       append_list                                      undefined append_list()
+                 ff ff
+        001012bb 49 83 c5 01     ADD        R13,0x1
+        001012bf 4d 39 f5        CMP        R13,R14
+        001012c2 74 11           JZ         LAB_001012d5
+                             LAB_001012c4                                    XREF[1]:     0010127d(j)  
+        001012c4 ba 01 00        MOV        EDX,0x1
+                 00 00
+        001012c9 4c 89 e6        MOV        RSI,R12
+        001012cc 89 ef           MOV        EDI,EBP
+        001012ce e8 8d fd        CALL       <EXTERNAL>::read                                 ssize_t read(int __fd, void * __
+                 ff ff
+        001012d3 eb b9           JMP        LAB_0010128e
+                             LAB_001012d5                                    XREF[1]:     001012c2(j)  
+        001012d5 89 ef           MOV        EDI,EBP
+        001012d7 e8 74 fd        CALL       <EXTERNAL>::close                                int close(int __fd)
+                 ff ff
+        001012dc 48 8b 44        MOV        RAX,qword ptr [RSP + local_30]
+                 24 08
+        001012e1 48 83 c4 10     ADD        RSP,0x10
+        001012e5 5b              POP        RBX
+        001012e6 5d              POP        RBP
+        001012e7 41 5c           POP        R12
+        001012e9 41 5d           POP        R13
+        001012eb 41 5e           POP        R14
+        001012ed c3              RET
+
+                             **************************************************************
+                             *                          FUNCTION                          *
+                             **************************************************************
+                             undefined main()
+             undefined         AL:1           <RETURN>
+                             main                                            XREF[4]:     Entry Point(*), 
+                                                                                          _start:001010ed(*), 00102094, 
+                                                                                          001021d4(*)  
+        0010130b 55              PUSH       RBP
+        0010130c 53              PUSH       RBX
+        0010130d 48 83 ec 08     SUB        RSP,0x8
+        00101311 83 ff 01        CMP        EDI,0x1
+        00101314 0f 8e f1        JLE        LAB_0010140b
+                 00 00 00
+        0010131a 48 8b 7e 08     MOV        RDI,qword ptr [RSI + 0x8]
+        0010131e be 00 00        MOV        ESI,0x0
+                 00 00
+        00101323 b8 00 00        MOV        EAX,0x0
+                 00 00
+        00101328 e8 73 fd        CALL       <EXTERNAL>::open                                 int open(char * __file, int __of
+                 ff ff
+        0010132d 89 c3           MOV        EBX,EAX
+        0010132f 83 f8 ff        CMP        EAX,-0x1
+        00101332 0f 84 fe        JZ         LAB_00101436
+                 00 00 00
+        00101338 41 b9 00        MOV        R9D,0x0
+                 00 00 00
+        0010133e 41 89 c0        MOV        R8D,EAX
+        00101341 b9 02 00        MOV        ECX,0x2
+                 00 00
+        00101346 ba 03 00        MOV        EDX,0x3
+                 00 00
+        0010134b be 00 10        MOV        ESI,0x1000
+                 00 00
+        00101350 bf 00 00        MOV        EDI,0x0
+                 00 00
+        00101355 e8 e6 fc        CALL       <EXTERNAL>::mmap                                 void * mmap(void * __addr, size_
+                 ff ff
+        0010135a 48 89 c3        MOV        RBX,RAX
+        0010135d 48 85 c0        TEST       RAX,RAX
+        00101360 0f 84 de        JZ         LAB_00101444
+                 00 00 00
+        00101366 bd 00 00        MOV        EBP,0x0
+                 00 00
+        0010136b 48 c7 80        MOV        qword ptr [RAX + 0xaf],0x0
+                 af 00 00 
+                 00 00 00 
+        00101376 48 c7 80        MOV        qword ptr [RAX + 0xff8],0x0
+                 f8 0f 00 
+                 00 00 00 
+        00101381 48 8d b8        LEA        RDI,[RAX + 0xb7]
+                 b7 00 00 00
+        00101388 48 83 e7 f8     AND        RDI,-0x8
+        0010138c 29 f8           SUB        EAX,EDI
+        0010138e 8d 88 00        LEA        ECX,[RAX + 0x1000]
+                 10 00 00
+        00101394 c1 e9 03        SHR        ECX,0x3
+        00101397 89 c9           MOV        ECX,ECX
+        00101399 48 89 e8        MOV        RAX,RBP
+        0010139c f3 48 ab        STOSQ.REP  RDI
+        0010139f 48 89 df        MOV        RDI,RBX
+        001013a2 e8 97 fe        CALL       init_shuffle_list                                undefined init_shuffle_list()
+                 ff ff
+        001013a7 48 89 c2        MOV        RDX,RAX
+        001013aa 48 c7 03        MOV        qword ptr [RBX],0x0
+                 00 00 00 00
+        001013b1 48 c7 83        MOV        qword ptr [RBX + 0xa7],0x0
+                 a7 00 00 
+                 00 00 00 
+        001013bc 48 8d 7b 08     LEA        RDI,[RBX + 0x8]
+        001013c0 48 83 e7 f8     AND        RDI,-0x8
+        001013c4 48 89 d9        MOV        RCX,RBX
+        001013c7 48 29 f9        SUB        RCX,RDI
+        001013ca 81 c1 af        ADD        ECX,0xaf
+                 00 00 00
+        001013d0 c1 e9 03        SHR        ECX,0x3
+        001013d3 89 c9           MOV        ECX,ECX
+        001013d5 48 89 e8        MOV        RAX,RBP
+        001013d8 f3 48 ab        STOSQ.REP  RDI
+        001013db 48 89 de        MOV        RSI,RBX
+        001013de 48 89 d7        MOV        RDI,RDX
+        001013e1 e8 08 ff        CALL       shuf                                             undefined shuf()
+                 ff ff
+        001013e6 48 89 df        MOV        RDI,RBX
+        001013e9 e8 42 fc        CALL       <EXTERNAL>::puts                                 int puts(char * __s)
+                 ff ff
+        001013ee be 0b 00        MOV        ESI,0xb
+                 00 00
+        001013f3 bf 00 00        MOV        EDI,0x0
+                 00 00
+        001013f8 e8 83 fc        CALL       <EXTERNAL>::kill                                 int kill(__pid_t __pid, int __sig)
+                 ff ff
+        001013fd bb 00 00        MOV        EBX,0x0
+                 00 00
+                             LAB_00101402                                    XREF[3]:     00101434(j), 00101442(j), 
+                                                                                          00101455(j)  
+        00101402 89 d8           MOV        EAX,EBX
+        00101404 48 83 c4 08     ADD        RSP,0x8
+        00101408 5b              POP        RBX
+        00101409 5d              POP        RBP
+        0010140a c3              RET
+                             LAB_0010140b                                    XREF[1]:     00101314(j)  
+        0010140b 48 8d 15        LEA        RDX,[s_./program_00102011]                       = "./program"
+                 ff 0b 00 00
+        00101412 75 03           JNZ        LAB_00101417
+        00101414 48 8b 16        MOV        RDX,qword ptr [RSI]
+                             LAB_00101417                                    XREF[1]:     00101412(j)  
+        00101417 48 8d 35        LEA        RSI,[s_Usage:_%s_<secret_file>_0010201b]         = "Usage: %s <secret file>\n"
+                 fd 0b 00 00
+        0010141e 48 8b 3d        MOV        RDI,qword ptr [stderr]
+                 5b 2c 00 00
+        00101425 b8 00 00        MOV        EAX,0x0
+                 00 00
+        0010142a e8 41 fc        CALL       <EXTERNAL>::fprintf                              int fprintf(FILE * __stream, cha
+                 ff ff
+        0010142f bb ff ff        MOV        EBX,0xffffffff
+                 ff ff
+        00101434 eb cc           JMP        LAB_00101402
+                             LAB_00101436                                    XREF[1]:     00101332(j)  
+        00101436 48 8d 3d        LEA        RDI,[s_Opening_file_00102034]                    = "Opening file"
+                 f7 0b 00 00
+        0010143d e8 6e fc        CALL       <EXTERNAL>::perror                               void perror(char * __s)
+                 ff ff
+        00101442 eb be           JMP        LAB_00101402
+                             LAB_00101444                                    XREF[1]:     00101360(j)  
+        00101444 48 8d 3d        LEA        RDI,[s_Mapping_file_00102041]                    = "Mapping file"
+                 f6 0b 00 00
+        0010144b e8 60 fc        CALL       <EXTERNAL>::perror                               void perror(char * __s)
+                 ff ff
+        00101450 bb ff ff        MOV        EBX,0xffffffff
+                 ff ff
+        00101455 eb ab           JMP        LAB_00101402
+
+                             **************************************************************
+                             *                          FUNCTION                          *
+                             **************************************************************
+                             undefined pos_in_list()
+             undefined         AL:1           <RETURN>
+                             pos_in_list                                     XREF[4]:     Entry Point(*), 
+                                                                                          init_shuffle_list:001012a1(c), 
+                                                                                          00102074, 00102140(*)  
+        001011b5 48 85 ff        TEST       RDI,RDI
+        001011b8 74 14           JZ         LAB_001011ce
+                             LAB_001011ba                                    XREF[1]:     001011c6(j)  
+        001011ba 40 38 77 08     CMP        byte ptr [RDI + 0x8],SIL
+        001011be 74 14           JZ         LAB_001011d4
+        001011c0 48 8b 3f        MOV        RDI,qword ptr [RDI]
+        001011c3 48 85 ff        TEST       RDI,RDI
+        001011c6 75 f2           JNZ        LAB_001011ba
+        001011c8 b8 00 00        MOV        EAX,0x0
+                 00 00
+        001011cd c3              RET
+                             LAB_001011ce                                    XREF[1]:     001011b8(j)  
+        001011ce b8 00 00        MOV        EAX,0x0
+                 00 00
+        001011d3 c3              RET
+                             LAB_001011d4                                    XREF[1]:     001011be(j)  
+        001011d4 b8 01 00        MOV        EAX,0x1
+                 00 00
+        001011d9 c3              RET
+
+                             **************************************************************
+                             *                          FUNCTION                          *
+                             **************************************************************
+                             undefined shuf()
+             undefined         AL:1           <RETURN>
+                             shuf                                            XREF[4]:     Entry Point(*), main:001013e1(c), 
+                                                                                          0010208c, 001021c0(*)  
+        001012ee 48 85 ff        TEST       RDI,RDI
+        001012f1 74 17           JZ         LAB_0010130a
+                             LAB_001012f3                                    XREF[1]:     00101308(j)  
+        001012f3 0f b6 57 09     MOVZX      EDX,byte ptr [RDI + 0x9]
+        001012f7 0f b6 47 08     MOVZX      EAX,byte ptr [RDI + 0x8]
+        001012fb 88 14 06        MOV        byte ptr [RSI + RAX*0x1],DL
+        001012fe c6 47 09 00     MOV        byte ptr [RDI + 0x9],0x0
+        00101302 48 8b 3f        MOV        RDI,qword ptr [RDI]
+        00101305 48 85 ff        TEST       RDI,RDI
+        00101308 75 e9           JNZ        LAB_001012f3
+                             LAB_0010130a                                    XREF[1]:     001012f1(j)  
+        0010130a c3              RET
